@@ -24,3 +24,6 @@ DerivedData/
 
 # Chief
 .chief/
+
+# Claude
+.claude/

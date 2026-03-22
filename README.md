@@ -1,8 +1,10 @@
 # Hihi
 
+![Hihi](mj.png)
+
 A macOS menu bar app that makes Michael Jackson moonwalk across the bottom of your screen at random intervals, complete with "hee-hee!" and "hoooo!" sound effects and speech bubbles.
 
-> **Fan-made project.** This app uses a green-screen video of Michael Jackson that is processed with real-time chroma key removal. It is not affiliated with, endorsed by, or associated with the Michael Jackson estate or any related entities. All trademarks belong to their respective owners.
+> **Fan-made project.** It is not affiliated with, endorsed by, or associated with the Michael Jackson estate or any related entities. All trademarks belong to their respective owners.
 
 ## Install
 
