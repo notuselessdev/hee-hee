@@ -27,8 +27,14 @@ final class HeeHeeAnimator: ObservableObject {
     private var endObserver: Any?
     @Published private(set) var isAnimating = false
     private var lastWentRight: Bool? = nil
+    private let chromakeyFilterData: CIFilter
+    private let videoAsset: AVAsset?
 
-    private init() {}
+    private init() {
+        chromakeyFilterData = Self.chromakeyFilter(fromHue: 0.25, toHue: 0.45)
+        videoAsset = Bundle.main.url(forResource: "hee-hee", withExtension: "mp4")
+            .map { AVAsset(url: $0) }
+    }
 
     // MARK: - Public API
 
@@ -37,7 +43,7 @@ final class HeeHeeAnimator: ObservableObject {
         isAnimating = true
         onComplete = completion
 
-        guard let videoURL = Bundle.main.url(forResource: "hee-hee", withExtension: "mp4") else {
+        guard let asset = videoAsset else {
             stopAnimation()
             return
         }
@@ -59,9 +65,8 @@ final class HeeHeeAnimator: ObservableObject {
         let endX: CGFloat = goingRight ? screenWidth : -size.width
 
         // Set up AVPlayer with chromakey composition to remove green screen
-        let asset = AVAsset(url: videoURL)
         let playerItem = AVPlayerItem(asset: asset)
-        playerItem.videoComposition = Self.makeChromakeyComposition(for: asset)
+        playerItem.videoComposition = makeChromakeyComposition(for: asset)
 
         let avPlayer = AVPlayer(playerItem: playerItem)
         avPlayer.isMuted = true
@@ -87,8 +92,8 @@ final class HeeHeeAnimator: ObservableObject {
         layer.backgroundColor = NSColor.clear.cgColor
         hostView.layer?.addSublayer(layer)
 
-        // Flip horizontally when going right to left so the character faces the correct direction
-        if !goingRight {
+        // Flip horizontally when going left to right so the character faces the correct direction
+        if goingRight {
             hostView.layer?.transform = CATransform3DMakeScale(-1, 1, 1)
         }
 
@@ -166,15 +171,11 @@ final class HeeHeeAnimator: ObservableObject {
     // MARK: - Chromakey
 
     /// Creates an AVVideoComposition that removes green screen pixels in realtime.
-    private static func makeChromakeyComposition(for asset: AVAsset) -> AVVideoComposition {
+    private func makeChromakeyComposition(for asset: AVAsset) -> AVVideoComposition {
+        let filter = chromakeyFilterData
         let composition = AVMutableVideoComposition(asset: asset) { request in
             let source = request.sourceImage.clampedToExtent()
 
-            // Use CIColorCube to map green pixels to transparent
-            let filter = chromakeyFilter(
-                fromHue: 0.25, // green hue range start (~90°)
-                toHue: 0.45    // green hue range end (~160°)
-            )
             filter.setValue(source, forKey: kCIInputImageKey)
 
             if let output = filter.outputImage?.cropped(to: request.sourceImage.extent) {
