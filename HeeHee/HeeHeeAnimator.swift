@@ -1,7 +1,6 @@
 import AppKit
 import AVFoundation
 import Combine
-import CoreImage
 
 /// Plays the hee-hee video across the overlay window and triggers audio at random points.
 @MainActor
@@ -27,9 +26,6 @@ final class HeeHeeAnimator: ObservableObject {
     private var endObserver: Any?
     @Published private(set) var isAnimating = false
     private var lastWentRight: Bool? = nil
-    private lazy var chromakeyFilterData: CIFilter = Self.chromakeyFilter(fromHue: 0.25, toHue: 0.45)
-    private lazy var videoAsset: AVAsset? = Bundle.main.url(forResource: "hee-hee", withExtension: "mp4")
-        .map { AVAsset(url: $0) }
 
     private init() {}
 
@@ -40,7 +36,7 @@ final class HeeHeeAnimator: ObservableObject {
         isAnimating = true
         onComplete = completion
 
-        guard let asset = videoAsset else {
+        guard let videoURL = Bundle.main.url(forResource: "hee-hee", withExtension: "mov") else {
             stopAnimation()
             return
         }
@@ -61,10 +57,7 @@ final class HeeHeeAnimator: ObservableObject {
         let startX: CGFloat = goingRight ? -size.width : screenWidth
         let endX: CGFloat = goingRight ? screenWidth : -size.width
 
-        // Set up AVPlayer with chromakey composition to remove green screen
-        let playerItem = AVPlayerItem(asset: asset)
-        playerItem.videoComposition = makeChromakeyComposition(for: asset)
-
+        let playerItem = AVPlayerItem(url: videoURL)
         let avPlayer = AVPlayer(playerItem: playerItem)
         avPlayer.isMuted = true
         player = avPlayer
@@ -163,82 +156,6 @@ final class HeeHeeAnimator: ObservableObject {
         let callback = onComplete
         onComplete = nil
         callback?()
-    }
-
-    // MARK: - Chromakey
-
-    /// Creates an AVVideoComposition that removes green screen pixels in realtime.
-    private func makeChromakeyComposition(for asset: AVAsset) -> AVVideoComposition {
-        let filter = chromakeyFilterData
-        let composition = AVMutableVideoComposition(asset: asset) { request in
-            let source = request.sourceImage.clampedToExtent()
-
-            filter.setValue(source, forKey: kCIInputImageKey)
-
-            if let output = filter.outputImage?.cropped(to: request.sourceImage.extent) {
-                request.finish(with: output, context: nil)
-            } else {
-                request.finish(with: source, context: nil)
-            }
-        }
-        composition.renderSize = CGSize(width: 720, height: 720)
-        return composition
-    }
-
-    /// Builds a CIColorCube filter that maps a hue range to transparent.
-    private static func chromakeyFilter(fromHue: CGFloat, toHue: CGFloat) -> CIFilter {
-        let cubeSize = 64
-        let cubeDataSize = cubeSize * cubeSize * cubeSize * 4
-        var cubeData = [Float](repeating: 0, count: cubeDataSize)
-
-        var offset = 0
-        for z in 0..<cubeSize {
-            let blue = CGFloat(z) / CGFloat(cubeSize - 1)
-            for y in 0..<cubeSize {
-                let green = CGFloat(y) / CGFloat(cubeSize - 1)
-                for x in 0..<cubeSize {
-                    let red = CGFloat(x) / CGFloat(cubeSize - 1)
-
-                    let hue = getHue(red: red, green: green, blue: blue)
-                    let alpha: Float = (hue >= fromHue && hue <= toHue) ? 0.0 : 1.0
-
-                    cubeData[offset]     = Float(red) * alpha    // premultiplied
-                    cubeData[offset + 1] = Float(green) * alpha
-                    cubeData[offset + 2] = Float(blue) * alpha
-                    cubeData[offset + 3] = alpha
-                    offset += 4
-                }
-            }
-        }
-
-        let data = Data(bytes: cubeData, count: cubeDataSize * MemoryLayout<Float>.size)
-
-        let filter = CIFilter(name: "CIColorCube")!
-        filter.setValue(cubeSize, forKey: "inputCubeDimension")
-        filter.setValue(data, forKey: "inputCubeData")
-        return filter
-    }
-
-    /// Converts RGB to hue (0.0–1.0).
-    private static func getHue(red: CGFloat, green: CGFloat, blue: CGFloat) -> CGFloat {
-        let maxVal = max(red, green, blue)
-        let minVal = min(red, green, blue)
-        let delta = maxVal - minVal
-
-        guard delta > 0.001 else { return 0 }
-
-        var hue: CGFloat
-        if maxVal == red {
-            hue = (green - blue) / delta
-        } else if maxVal == green {
-            hue = 2.0 + (blue - red) / delta
-        } else {
-            hue = 4.0 + (red - green) / delta
-        }
-
-        hue /= 6.0
-        if hue < 0 { hue += 1.0 }
-        return hue
     }
 
     // MARK: - Speech Bubble

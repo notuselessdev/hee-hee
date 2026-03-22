@@ -12,7 +12,7 @@
 		AA000008 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000009 /* OverlayWindow.swift */; };
 		AA00000A /* HeeHeeAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000B /* HeeHeeAnimator.swift */; };
 		AA00000C /* HeeHeeAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000D /* HeeHeeAudioPlayer.swift */; };
-		AA00000E /* hee-hee.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AA00000F /* hee-hee.mp4 */; };
+		AA00000E /* hee-hee.mov in Resources */ = {isa = PBXBuildFile; fileRef = AA00000F /* hee-hee.mov */; };
 		AA00001A /* hee-hee.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA00001B /* hee-hee.mp3 */; };
 		AA00001C /* hoooo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA00001D /* hoooo.mp3 */; };
 		AA000012 /* SpeechBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000013 /* SpeechBubbleView.swift */; };
@@ -30,7 +30,7 @@
 		AA000009 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		AA00000B /* HeeHeeAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeeHeeAnimator.swift; sourceTree = "<group>"; };
 		AA00000D /* HeeHeeAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeeHeeAudioPlayer.swift; sourceTree = "<group>"; };
-		AA00000F /* hee-hee.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = hee-hee.mp4; sourceTree = "<group>"; };
+		AA00000F /* hee-hee.mov */ = {isa = PBXFileReference; lastKnownFileType = file; path = hee-hee.mov; sourceTree = "<group>"; };
 		AA00001B /* hee-hee.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "hee-hee.mp3"; sourceTree = "<group>"; };
 		AA00001D /* hoooo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hoooo.mp3; sourceTree = "<group>"; };
 		AA000013 /* SpeechBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleView.swift; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 				AA000015 /* HeeHeeTimer.swift */,
 				AA000017 /* LaunchAtLoginManager.swift */,
 				AA000019 /* PreferencesManager.swift */,
-				AA00000F /* hee-hee.mp4 */,
+				AA00000F /* hee-hee.mov */,
 				AA00001B /* hee-hee.mp3 */,
 				AA00001D /* hoooo.mp3 */,
 				AA000004 /* Assets.xcassets */,
@@ -146,7 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA000003 /* Assets.xcassets in Resources */,
-				AA00000E /* hee-hee.mp4 in Resources */,
+				AA00000E /* hee-hee.mov in Resources */,
 				AA00001A /* hee-hee.mp3 in Resources */,
 				AA00001C /* hoooo.mp3 in Resources */,
 			);
