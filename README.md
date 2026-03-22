@@ -30,6 +30,12 @@ Download the latest `.dmg` from [Releases](https://github.com/notuselessdev/hee-
 
 hee-hee is not notarized by Apple, so macOS will block it the first time you open it. To allow it:
 
+```sh
+xattr -d com.apple.quarantine /Applications/hee-hee.app
+```
+
+Or manually:
+
 1. Open hee-hee -- macOS will show a warning and prevent it from opening
 2. Go to **System Settings > Privacy & Security**
 3. Scroll down to the Security section -- you'll see a message about hee-hee being blocked
