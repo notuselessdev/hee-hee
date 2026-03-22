@@ -19,6 +19,7 @@ final class MoonwalkAnimator {
     private var frameTimer: Timer?
     private var currentFrame = 0
     private(set) var isAnimating = false
+    private var hihiTimer: Timer?
 
     private init() {
         spriteFrames = Self.generateFrames()
@@ -62,9 +63,16 @@ final class MoonwalkAnimator {
             }
         }
 
-        // Slide across the screen over 5-8 seconds
+        // Schedule "hihi" audio at a random point during the moonwalk
         let duration = Double.random(in: 5...8)
+        let hihiDelay = Double.random(in: 0.5...(duration - 1.0))
+        hihiTimer = Timer.scheduledTimer(withTimeInterval: hihiDelay, repeats: false) { _ in
+            Task { @MainActor in
+                HihiAudioPlayer.shared.play()
+            }
+        }
 
+        // Slide across the screen over 5-8 seconds
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = duration
             context.timingFunction = CAMediaTimingFunction(name: .linear)
@@ -79,6 +87,8 @@ final class MoonwalkAnimator {
     func stopMoonwalk() {
         frameTimer?.invalidate()
         frameTimer = nil
+        hihiTimer?.invalidate()
+        hihiTimer = nil
         spriteView?.removeFromSuperview()
         spriteView = nil
         currentFrame = 0
