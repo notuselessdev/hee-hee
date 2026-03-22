@@ -1,8 +1,9 @@
 import AppKit
+import Combine
 
 /// Generates moonwalk sprite frames programmatically and animates them across the overlay window.
 @MainActor
-final class MoonwalkAnimator {
+final class MoonwalkAnimator: ObservableObject {
 
     static let shared = MoonwalkAnimator()
 
@@ -18,7 +19,7 @@ final class MoonwalkAnimator {
     private var spriteView: NSImageView?
     private var frameTimer: Timer?
     private var currentFrame = 0
-    private(set) var isAnimating = false
+    @Published private(set) var isAnimating = false
     private var hihiTimer: Timer?
     private var speechBubble: SpeechBubbleView?
     private var onComplete: (() -> Void)?

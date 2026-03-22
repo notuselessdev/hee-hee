@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct MoonWalkApp: App {
+    @ObservedObject private var animator = MoonwalkAnimator.shared
+
     init() {
         MoonwalkTimer.shared.start()
     }
@@ -12,6 +14,7 @@ struct MoonWalkApp: App {
                 MoonwalkTimer.shared.reset()
                 MoonwalkAnimator.shared.startMoonwalk()
             }
+            .disabled(animator.isAnimating)
             .keyboardShortcut("m", modifiers: [.command, .shift])
 
             Divider()
