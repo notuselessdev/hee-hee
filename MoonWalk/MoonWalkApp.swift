@@ -5,7 +5,7 @@ struct MoonWalkApp: App {
     var body: some Scene {
         MenuBarExtra("MoonWalk", systemImage: "figure.walk") {
             Button("Moonwalk Now") {
-                // TODO: Trigger moonwalk animation
+                MoonwalkAnimator.shared.startMoonwalk()
             }
             .keyboardShortcut("m", modifiers: [.command, .shift])
 

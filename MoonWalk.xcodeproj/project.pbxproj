@@ -10,6 +10,7 @@
 		AA000001 /* MoonWalkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002 /* MoonWalkApp.swift */; };
 		AA000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000004 /* Assets.xcassets */; };
 		AA000008 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000009 /* OverlayWindow.swift */; };
+		AA00000A /* MoonwalkAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000B /* MoonwalkAnimator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		AA000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA000007 /* MoonWalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonWalk.entitlements; sourceTree = "<group>"; };
 		AA000009 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
+		AA00000B /* MoonwalkAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonwalkAnimator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 			children = (
 				AA000002 /* MoonWalkApp.swift */,
 				AA000009 /* OverlayWindow.swift */,
+				AA00000B /* MoonwalkAnimator.swift */,
 				AA000004 /* Assets.xcassets */,
 				AA000006 /* Info.plist */,
 				AA000007 /* MoonWalk.entitlements */,
@@ -131,6 +134,7 @@
 			files = (
 				AA000001 /* MoonWalkApp.swift in Sources */,
 				AA000008 /* OverlayWindow.swift in Sources */,
+				AA00000A /* MoonwalkAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
