@@ -2,9 +2,14 @@ import SwiftUI
 
 @main
 struct MoonWalkApp: App {
+    init() {
+        MoonwalkTimer.shared.start()
+    }
+
     var body: some Scene {
         MenuBarExtra("MoonWalk", systemImage: "figure.walk") {
             Button("Moonwalk Now") {
+                MoonwalkTimer.shared.reset()
                 MoonwalkAnimator.shared.startMoonwalk()
             }
             .keyboardShortcut("m", modifiers: [.command, .shift])

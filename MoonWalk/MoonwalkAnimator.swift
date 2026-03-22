@@ -21,6 +21,7 @@ final class MoonwalkAnimator {
     private(set) var isAnimating = false
     private var hihiTimer: Timer?
     private var speechBubble: SpeechBubbleView?
+    private var onComplete: (() -> Void)?
 
     private init() {
         spriteFrames = Self.generateFrames()
@@ -28,9 +29,10 @@ final class MoonwalkAnimator {
 
     // MARK: - Public API
 
-    func startMoonwalk() {
+    func startMoonwalk(completion: (() -> Void)? = nil) {
         guard !isAnimating else { return }
         isAnimating = true
+        onComplete = completion
 
         let controller = OverlayWindowController.shared
         controller.show()
@@ -98,6 +100,9 @@ final class MoonwalkAnimator {
         currentFrame = 0
         isAnimating = false
         OverlayWindowController.shared.hide()
+        let callback = onComplete
+        onComplete = nil
+        callback?()
     }
 
     // MARK: - Speech Bubble
